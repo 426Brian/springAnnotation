@@ -1,11 +1,28 @@
 package com.sprAnnotation.bean;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+
 /**
  * Created by Brian in 6:57 2018/12/12
  */
+
 public class Person {
+    @Value("zs")
     private String name;
+    @Value("#{20-2}")
     private int age;
+
+    @Value("${person.nickName}")
+    private String nickName;
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
 
     public Person() {
     }
@@ -36,6 +53,7 @@ public class Person {
         return "Person{" +
                 "name='" + name + '\'' +
                 ", age=" + age +
+                ", nickName='" + nickName + '\'' +
                 '}';
     }
 }

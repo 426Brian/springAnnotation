@@ -4,6 +4,9 @@ import com.sprAnnotation.bean.Color;
 import com.sprAnnotation.bean.Person;
 import com.sprAnnotation.condition.LinuxCondition;
 import com.sprAnnotation.condition.WindowsCondition;
+import com.sprAnnotation.factory.ColorFactoryBean;
+import com.sprAnnotation.filter.MyTypeFilter;
+import com.sprAnnotation.imports.MyImportBeanDefinitionRegistrar;
 import com.sprAnnotation.imports.MyImportSelector;
 import org.springframework.context.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -14,8 +17,13 @@ import org.springframework.stereotype.Controller;
 
 @Configuration
 @ComponentScan(value = {"com.sprAnnotation"},
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, classes = {Controller.class})})
-@Import({Color.class, MyImportSelector.class})
+        excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = {Controller.class})},
+        includeFilters = {
+                @ComponentScan.Filter(type = FilterType.CUSTOM, classes = {MyTypeFilter.class})
+        })
+
+@Import({Color.class, MyImportSelector.class, MyImportBeanDefinitionRegistrar.class})
 public class MainConfig {
     @Bean
     public Person person(){
@@ -35,4 +43,8 @@ public class MainConfig {
         return new Person("linus", 62);
     }
 
+    @Bean
+    public ColorFactoryBean colorFactoryBean(){
+        return new ColorFactoryBean();
+    }
 }
